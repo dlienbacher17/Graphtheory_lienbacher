@@ -1,6 +1,6 @@
 package htbla.aud3.graphtheory;
 
-import java.io.File;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -9,7 +9,32 @@ import java.util.List;
 public class Graph {
 
     public void read(File adjacencyMatrix) {
-	
+        String csvFile = "";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ";";
+
+        try {
+
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[]matrizen = line.split(cvsSplitBy);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId) {
