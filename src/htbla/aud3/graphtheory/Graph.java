@@ -1,15 +1,16 @@
 package htbla.aud3.graphtheory;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
 /**
- * @author TODO Bitte Gruppenmitglieder eintragen!
+ * @author Jan Fuehrer, David Lienbacher, Fabian Psutka
  */
 public class Graph {
 
     public void read(File adjacencyMatrix) {
-	
+        
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId) {
