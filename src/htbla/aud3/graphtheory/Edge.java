@@ -5,12 +5,20 @@ package htbla.aud3.graphtheory;
  */
 public class Edge {
     
+    private int fromNodeId;
+    private int toNodeId;
+    
+    public Edge (int fromNodeId, int toNodeId) {
+        this.fromNodeId = fromNodeId;
+        this.toNodeId = toNodeId;
+    }
+    
     public int getFromNodeId() {
-        return -1;
+        return fromNodeId;
     }
     
     public int getToNodeId() {
-        return -1;
+        return toNodeId;
     }
     
 }

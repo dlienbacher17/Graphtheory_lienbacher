@@ -3,11 +3,13 @@ package htbla.aud3.graphtheory;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Arrays;
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * @author TODO Bitte Gruppenmitglieder eintragen!
+ * @author Jan Fuehrer, David Lienbacher, Fabian Psutka
  */
 public class Graph {
 
