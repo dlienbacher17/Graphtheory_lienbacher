@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 /**
- * @author TODO Bitte Gruppenmitglieder eintragen!
+ * @author Jan Fuehrer, David Lienbacher, Fabian Psutka
  */
 public class Graph {
 
