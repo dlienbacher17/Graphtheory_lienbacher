@@ -42,11 +42,11 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId) {
-        return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId);
+        return determineShortestPath(sourceNodeId, targetNodeId);
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
-        return null;
+        return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId, viaNodeIds);
     }
     
     public double determineMaximumFlow(int sourceNodeId, int targetNodeId) {
@@ -57,7 +57,7 @@ public class Graph {
         return null;
     }
 
-    private Path dspRec(List<Edge> path, int currentNodeId, int targetNode) {
+    private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, int[] requiredNodes) {
         List<Edge> neighbors = determinePossiblePaths(currentNodeId).stream().filter(p ->!path.contains(p)).collect(Collectors.toList());
 
         if(neighbors.size() == 0)
@@ -68,10 +68,14 @@ public class Graph {
             path.add(i);
 
             if(i.getToNodeId() == targetNode) {
+                for (int x : requiredNodes) {
+                    if(!Arrays.asList(requiredNodes).contains(x))
+                        return null;
+                }
                 return new Path(path);
             }
 
-            Path result = dspRec(path, i.getToNodeId(), targetNode);
+            Path result = dspRec(path, i.getToNodeId(), targetNode, requiredNodes);
 
             if (result == null)
                 continue;
