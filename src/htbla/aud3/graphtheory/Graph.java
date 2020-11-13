@@ -42,7 +42,7 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId) {
-        return null;
+        return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId);
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
@@ -57,6 +57,37 @@ public class Graph {
         return null;
     }
 
+    private Path dspRec(List<Edge> path, int currentNodeId, int targetNode) {
+        List<Edge> neighbors = determinePossiblePaths(currentNodeId).stream().filter(p ->!path.contains(p)).collect(Collectors.toList());
+
+        if(neighbors.size() == 0)
+            return null;
+        Path currentBest = null;
+        double currentBestDist = Double.MAX_VALUE;
+        for (Edge i : neighbors) {
+            path.add(i);
+
+            if(i.getToNodeId() == targetNode) {
+                return new Path(path);
+            }
+
+            Path result = dspRec(path, i.getToNodeId(), targetNode);
+
+            double currentDist = result.computeDistance();
+            if (currentBest == null) {
+                currentBest = result;
+                currentBestDist = currentDist;
+            }
+            else {
+                if (currentDist < currentBestDist) {
+                    currentBest = result;
+                    currentBestDist = currentDist;
+                }
+            }
+            path.remove(i);
+        }
+        return currentBest;
+    }
 
     private List<Edge> determinePossiblePaths(int nodeId) {
         return edges.stream().filter(p -> p.getFromNodeId() == nodeId).collect(Collectors.toList());
