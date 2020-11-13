@@ -1,20 +1,30 @@
 package htbla.aud3.graphtheory;
 
 /*
- * @author TODO Bitte Gruppenmitglieder eintragen!
+ * @author Jan Fuehrer, David Lienbacher, Fabian Psutka
  */
 public class Edge {
-
-    int length;
-    int fromId;
-    int toId;
-
+    
+    private int fromNodeId;
+    private int toNodeId;
+    private double edgeWeight;
+    
+    public Edge (int fromNodeId, int toNodeId, double edgeWeight) {
+        this.fromNodeId = fromNodeId;
+        this.toNodeId = toNodeId;
+        this.edgeWeight = edgeWeight;
+    }
+    
     public int getFromNodeId() {
-        return -1;
+        return fromNodeId;
     }
     
     public int getToNodeId() {
-        return -1;
+        return toNodeId;
+    }
+    
+    public double getEdgeWeight() {
+        return edgeWeight;
     }
     
 }

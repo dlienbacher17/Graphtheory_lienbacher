@@ -1,7 +1,7 @@
 package htbla.aud3.graphtheory;
 
 /**
- * @author TODO Bitte Gruppenmitglieder eintragen!
+ * @author Jan Fuehrer, David Lienbacher, Fabian Psutka
  */
 public class Path {
     
