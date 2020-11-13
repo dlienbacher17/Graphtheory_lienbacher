@@ -73,6 +73,9 @@ public class Graph {
 
             Path result = dspRec(path, i.getToNodeId(), targetNode);
 
+            if (result == null)
+                continue;
+
             double currentDist = result.computeDistance();
             if (currentBest == null) {
                 currentBest = result;
