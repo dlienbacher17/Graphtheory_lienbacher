@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
  * @author Jan Fuehrer, David Lienbacher, Fabian Psutka
  */
 public class Path {
-    
+
     private List<Edge> edges;
     
     public Path(List<Edge> edges) {
@@ -23,7 +23,11 @@ public class Path {
     }
     
     public double computeDistance() {
-        return -1.0;
+        double distance = 0.0;
+        for (Edge e : edges) {
+            distance = distance + e.getEdgeWeight();
+        }
+        return distance;
     }
     
 }
