@@ -8,6 +8,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * @author Jan Fuehrer, David Lienbacher, Fabian Psutka
@@ -56,4 +57,8 @@ public class Graph {
         return null;
     }
 
+
+    private List<Edge> determinePossiblePaths(int nodeId) {
+        return edges.stream().filter(p -> p.getFromNodeId() == nodeId).collect(Collectors.toList());
+    }
 }
