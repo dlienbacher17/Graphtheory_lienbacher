@@ -60,7 +60,7 @@ public class Graph {
     private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, int[] requiredNodes) {
         List<Edge> neighbors = determinePossiblePaths(currentNodeId).stream().filter(p ->!path.contains(p)).collect(Collectors.toList());
 
-        if(neighbors.size() == 0)
+        if(neighbors.isEmpty())
             return null;
         Path currentBest = null;
         double currentBestDist = Double.MAX_VALUE;
