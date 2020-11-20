@@ -42,7 +42,7 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId) {
-        return determineShortestPath(sourceNodeId, targetNodeId);
+        return determineShortestPath(sourceNodeId, targetNodeId, new int[0]);
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
