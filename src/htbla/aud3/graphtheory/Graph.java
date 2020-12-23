@@ -120,7 +120,7 @@ public class Graph {
     private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, int[] requiredNodes, boolean shortest) {
         List<Edge> neighbors = determinePossiblePaths(currentNodeId)
             .stream()
-            .filter(p -> !path.stream().anyMatch(x -> x.getFromNodeId() == p.getToNodeId() && x.getToNodeId() == p.getFromNodeId()))
+            .filter(p -> !(path.contains(p) || path.stream().anyMatch(x -> x.getFromNodeId() == p.getToNodeId() && x.getToNodeId() == p.getFromNodeId())))
             .collect(Collectors.toList());
 
         if(neighbors.isEmpty())
