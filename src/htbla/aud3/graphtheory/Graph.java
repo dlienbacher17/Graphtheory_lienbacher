@@ -1,10 +1,12 @@
 package htbla.aud3.graphtheory;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.nio.file.Files;
 import java.util.*;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -14,6 +16,10 @@ import java.util.stream.IntStream;
 public class Graph {
 
     private List<Edge> edges;
+    
+    public List<Edge> getEdges() {
+        return edges;
+    }
 
     public void read(File adjacencyMatrix) {
         try {
