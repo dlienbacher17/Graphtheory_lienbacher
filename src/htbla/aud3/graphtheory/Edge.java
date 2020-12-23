@@ -26,7 +26,7 @@ public class Edge {
     public double getEdgeWeight() {
         return edgeWeight;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -56,5 +56,7 @@ public class Edge {
         return hash;
     }
     
-    
+    public void setEdgeWeight(double edgeWeight) {
+        this.edgeWeight = edgeWeight;
+    }
 }
