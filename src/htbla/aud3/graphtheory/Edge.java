@@ -26,5 +26,8 @@ public class Edge {
     public double getEdgeWeight() {
         return edgeWeight;
     }
-    
+
+    public void setEdgeWeight(double edgeWeight) {
+        this.edgeWeight = edgeWeight;
+    }
 }
