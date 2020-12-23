@@ -26,7 +26,39 @@ public class Edge {
     public double getEdgeWeight() {
         return edgeWeight;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Edge other = (Edge) obj;
+        
+        if (this.fromNodeId != other.fromNodeId) {
+            return false;
+        }
+        
+        if (this.toNodeId != other.toNodeId) {
+            return false;
+        }
+        
+        return true;
+    }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + this.fromNodeId;
+        hash = 59 * hash + this.toNodeId;
+        return hash;
+    }
+    
     public void setEdgeWeight(double edgeWeight) {
         this.edgeWeight = edgeWeight;
     }

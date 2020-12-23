@@ -1,10 +1,12 @@
 package htbla.aud3.graphtheory;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.nio.file.Files;
 import java.util.*;
 import java.io.File;
-import java.nio.file.Files;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,7 +15,13 @@ import java.util.stream.IntStream;
  */
 public class Graph {
 
+    private double currentBestDist;
+    private Path currentBest;
     private List<Edge> edges;
+    
+    public List<Edge> getEdges() {
+        return edges;
+    }
 
     public void read(File adjacencyMatrix) {
         try {
@@ -40,6 +48,8 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
+        currentBestDist = Double.MAX_VALUE;
+        currentBest = null;
         return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId, viaNodeIds, true);
     }
 
@@ -48,6 +58,8 @@ public class Graph {
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
+        currentBestDist = Double.MAX_VALUE;
+        currentBest = null;
         return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId, viaNodeIds, false);
     }
     
@@ -120,13 +132,11 @@ public class Graph {
     private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, int[] requiredNodes, boolean shortest) {
         List<Edge> neighbors = determinePossiblePaths(currentNodeId)
             .stream()
-            .filter(p -> !path.stream().anyMatch(x -> x.getFromNodeId() == p.getToNodeId() && x.getToNodeId() == p.getFromNodeId()))
+            .filter(p -> !(path.contains(p) || path.stream().anyMatch(x -> x.getFromNodeId() == p.getToNodeId() && x.getToNodeId() == p.getFromNodeId())))
             .collect(Collectors.toList());
 
         if(neighbors.isEmpty())
             return null;
-        Path currentBest = null;
-        double currentBestDist = Double.MAX_VALUE;
         for (Edge i : neighbors) {
             path.add(i);
 
@@ -137,8 +147,8 @@ public class Graph {
                 }
                 return new Path(path);
             }
-
-            Path result = dspRec(path, i.getToNodeId(), targetNode, requiredNodes, shortest);
+            
+            Path result = dspRec(path.stream().collect(Collectors.toList()), i.getToNodeId(), targetNode, requiredNodes, shortest);
 
             if (result == null)
                 continue;
