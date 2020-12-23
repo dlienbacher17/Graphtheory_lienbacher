@@ -15,6 +15,8 @@ import java.util.stream.IntStream;
  */
 public class Graph {
 
+    private double currentBestDist;
+    private Path currentBest;
     private List<Edge> edges;
     
     public List<Edge> getEdges() {
@@ -46,6 +48,8 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
+        currentBestDist = Double.MAX_VALUE;
+        currentBest = null;
         return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId, viaNodeIds, true);
     }
 
@@ -54,6 +58,8 @@ public class Graph {
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
+        currentBestDist = Double.MAX_VALUE;
+        currentBest = null;
         return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId, viaNodeIds, false);
     }
     
@@ -131,8 +137,6 @@ public class Graph {
 
         if(neighbors.isEmpty())
             return null;
-        Path currentBest = null;
-        double currentBestDist = Double.MAX_VALUE;
         for (Edge i : neighbors) {
             path.add(i);
 
@@ -143,8 +147,8 @@ public class Graph {
                 }
                 return new Path(path);
             }
-
-            Path result = dspRec(path, i.getToNodeId(), targetNode, requiredNodes, shortest);
+            
+            Path result = dspRec(path.stream().collect(Collectors.toList()), i.getToNodeId(), targetNode, requiredNodes, shortest);
 
             if (result == null)
                 continue;

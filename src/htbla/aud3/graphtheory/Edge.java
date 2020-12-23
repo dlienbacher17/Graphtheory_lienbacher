@@ -44,6 +44,10 @@ public class Edge {
             return false;
         }
         
+        if (this.toNodeId != other.toNodeId) {
+            return false;
+        }
+        
         return true;
     }
 
@@ -52,7 +56,6 @@ public class Edge {
         int hash = 7;
         hash = 59 * hash + this.fromNodeId;
         hash = 59 * hash + this.toNodeId;
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.edgeWeight) ^ (Double.doubleToLongBits(this.edgeWeight) >>> 32));
         return hash;
     }
     
