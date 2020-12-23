@@ -29,7 +29,10 @@ public class Path {
         }
         return distance;
     }
-    
+
+    public List<Edge> getEdges() {
+        return edges;
+    }
 }
 
 
