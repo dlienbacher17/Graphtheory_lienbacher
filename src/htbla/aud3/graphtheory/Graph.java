@@ -77,6 +77,8 @@ public class Graph {
                 edge.setEdgeWeight(edge.getEdgeWeight() - pathFlow);
                 Edge reverseEdge = getEdgeFromTo(v, u, tempEdges);
                 reverseEdge.setEdgeWeight(reverseEdge.getEdgeWeight() + pathFlow);
+                tempEdges.set(tempEdges.indexOf(edge), edge);
+                tempEdges.set(tempEdges.indexOf(reverseEdge), reverseEdge);
             }
 
             flow += pathFlow;
