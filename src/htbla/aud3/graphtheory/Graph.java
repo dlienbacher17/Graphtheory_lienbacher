@@ -57,6 +57,8 @@ public class Graph {
         return null;
     }
 
+
+    /* --- private recursive methods --- */
     private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, int[] requiredNodes) {
         List<Edge> neighbors = determinePossiblePaths(currentNodeId).stream().filter(p ->!path.contains(p)).collect(Collectors.toList());
 
