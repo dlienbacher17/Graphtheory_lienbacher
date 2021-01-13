@@ -80,8 +80,24 @@ public class GraphTest {
     }
 
     @Test
+    public void testDetermineShortestPath3_int_int() {
+        System.out.println("determineShortestPath()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_suchproblem_path));
+
+        int fromNodeId = 12;
+        int toNodeId = 55;
+
+        Path expectedDistance = null;
+        Path returnedDistance = graph.determineShortestPath(fromNodeId, toNodeId);
+
+        assertEquals(expectedDistance, returnedDistance);
+    }
+
+    @Test
     public void testDetermineMaximumFlow_int_int() {
-        System.out.println("bfs()");
+        System.out.println("determineMaximumFlow()");
 
         Graph graph = new Graph();
         graph.read(new File(linz_flussproblem_path));
@@ -90,6 +106,22 @@ public class GraphTest {
         int toNodeId = 2;
 
         int expectedDistance = 2250;
+        int returnedDistance = (int) graph.determineMaximumFlow(fromNodeId, toNodeId);
+
+        assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+    }
+
+    @Test
+    public void testDetermineMaximumFlow2_int_int() {
+        System.out.println("determineMaximumFlow()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_flussproblem_path));
+
+        int fromNodeId = 4;
+        int toNodeId = 1;
+
+        int expectedDistance = 1750;
         int returnedDistance = (int) graph.determineMaximumFlow(fromNodeId, toNodeId);
 
         assertEquals(expectedDistance, returnedDistance, 0.0000000001);

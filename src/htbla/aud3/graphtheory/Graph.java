@@ -49,7 +49,7 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
-        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, true);
+        return startRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, true);
     }
 
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, List<Edge> edges) {
@@ -57,7 +57,7 @@ public class Graph {
     }
 
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, List<Edge> edges, int... viaNodeIds) {
-        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, true);
+        return startRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, true);
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId) {
@@ -65,7 +65,7 @@ public class Graph {
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
-        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, false);
+        return startRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, false);
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId, List<Edge> edges) {
@@ -73,23 +73,28 @@ public class Graph {
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId, List<Edge> edges, int... viaNodeIds) {
-        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, false);
+        return startRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, false);
     }
     
     public double determineMaximumFlow(int sourceNodeId, int targetNodeId) {
-        List<Edge> tempEdges = new ArrayList<>(edges);
+        List<Edge> tempEdges = edges.stream().filter(p -> p.getEdgeWeight() > 0.0000000001).map(x -> {
+            x.setEdgeWeight(0 - x.getEdgeWeight());
+            return x;
+        }).collect(Collectors.toList());
         double result = 0.0;
 
         while(true) {
-            Path p = determineShortestPath(sourceNodeId, targetNodeId, tempEdges);
+            Path p = determineLongestPath(sourceNodeId, targetNodeId, tempEdges);
             if (p == null)
                 return result;
 
-            double maxFlow = p.getEdges().stream().mapToDouble(x -> x.getEdgeWeight()).min().getAsDouble();
+            double maxFlow = p.getEdges().stream().mapToDouble(x -> 0 - x.getEdgeWeight()).min().getAsDouble();
             result += maxFlow;
             for (Edge edge : p.getEdges()) {
                 Edge listElement = tempEdges.stream().filter(x -> x.equals(edge)).findFirst().get();
-                listElement.setEdgeWeight(listElement.getEdgeWeight() - maxFlow);
+                listElement.setEdgeWeight(listElement.getEdgeWeight() + maxFlow);
+                if (listElement.getEdgeWeight() >= 0.0)
+                    tempEdges.remove(listElement);
             }
         }
     }
@@ -111,7 +116,7 @@ public class Graph {
             }
         }
 
-        return tempEdges.stream().filter(p -> p.getEdgeWeight() < 0.00000001).collect(Collectors.toList());
+        return tempEdges.stream().filter(p -> Math.abs(p.getEdgeWeight()) < 0.00000001).collect(Collectors.toList());
     }
 
 
@@ -142,6 +147,16 @@ public class Graph {
         return alreadyVisited.contains(dest);
     }
 
+    private Path startRec(List<Edge> path, int currentNodeId, int targetNode, List<Edge> edges, int[] requiredNodes, boolean shortest)
+    {
+        if (!hasEntrances(targetNode))
+            return null;
+
+        currentBest = null;
+        currentBestDist = 0.0;
+        return dspRec(path, currentNodeId, targetNode, edges, requiredNodes, shortest);
+    }
+
     private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, List<Edge> edges, int[] requiredNodes, boolean shortest) {
         List<Edge> neighbors = determinePossiblePaths(currentNodeId)
             .stream()
@@ -153,6 +168,9 @@ public class Graph {
 
         for (Edge i : neighbors) {
             path.add(i);
+
+            if (currentBest != null && new Path(path).computeDistance() > currentBestDist)
+                return currentBest;
 
             if(i.getToNodeId() == targetNode) {
                 for (int requiredNode : requiredNodes)
@@ -204,7 +222,11 @@ public class Graph {
     }
 
     private List<Edge> determinePossiblePaths(int nodeId) {
-        return edges.stream().filter(p -> p.getFromNodeId() == nodeId).filter(p -> p.getEdgeWeight() > 0.0001).collect(Collectors.toList());
+        return edges.stream().filter(p -> p.getFromNodeId() == nodeId).filter(p -> Math.abs(p.getEdgeWeight()) > 0.0001).collect(Collectors.toList());
+    }
+
+    private boolean hasEntrances(int nodeId) {
+        return edges.stream().anyMatch(p -> p.getToNodeId() == nodeId && Math.abs(p.getEdgeWeight()) > 0.0001);
     }
 
     private Edge getEdgeFromTo(int from, int to, List<Edge> edges)
