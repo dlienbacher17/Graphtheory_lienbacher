@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
  */
 public class Graph {
 
+    private int numOfNodes;
     private double currentBestDist;
     private Path currentBest;
     private List<Edge> edges;
@@ -28,10 +29,10 @@ public class Graph {
             BufferedReader br = new BufferedReader(new FileReader(adjacencyMatrix));
             edges = new ArrayList();
             String line = br.readLine();
-            for(int fromId = 0; line != null; fromId++) {
+            for(numOfNodes = 0; line != null; numOfNodes++) {
                 int[] splits = Arrays.stream(line.split(";")).mapToInt(Integer::parseInt).toArray();
                 for (int toId = 0; toId < splits.length; toId++) {
-                    edges.add(new Edge(fromId + 1, toId + 1, splits[toId]));
+                    edges.add(new Edge(numOfNodes + 1, toId + 1, splits[toId]));
                 }
 
                 line = br.readLine();
@@ -68,18 +69,15 @@ public class Graph {
         while(bfs(sourceNodeId, targetNodeId, tempEdges, parent))
         {
             double pathFlow = Double.MAX_VALUE;
-            for (int v = targetNodeId; v != sourceNodeId; v = parent.get(v))
+            for (int v = targetNodeId; v != sourceNodeId; v = parent.get(v-1))
             {
-                u = parent.get(v);
-                /*List<Integer> fuckingjavawhydoicodethisbullshitomgstopitwhyistherenoenumerablerangeinjavareeeeee = new LinkedList();
-                for(int i = 0; i < tempEdges.size() - 1; i++)
-                    fuckingjavawhydoicodethisbullshitomgstopitwhyistherenoenumerablerangeinjavareeeeee.add(i);*/
+                u = parent.get(v-1);
                 pathFlow = Math.min(pathFlow, getEdgeFromTo(u, v, tempEdges).getEdgeWeight());
             }
 
             for (int v = targetNodeId; v != sourceNodeId; v = parent.get(v))
             {
-                u = parent.get(v);
+                u = parent.get(v-1);
                 Edge edge = getEdgeFromTo(u, v, tempEdges);
                 edge.setEdgeWeight(edge.getEdgeWeight() - pathFlow);
                 Edge reverseEdge = getEdgeFromTo(v, u, tempEdges);
@@ -111,9 +109,9 @@ public class Graph {
         {
             source = queue.poll();
             result.add(source);
-            for (int v = 1; v < edges.size()+1; v++)
+            for (int v = 1; v < numOfNodes+1; v++)
             {
-                Edge edge = getEdgeFromTo(source, v, edges);
+                Edge edge = getEdgeFromTo(v, source, edges);
 
                 if (!alreadyVisited.contains(v) && edge.getEdgeWeight() > 0.0)
                 {
@@ -193,6 +191,7 @@ public class Graph {
 
     private Edge getEdgeFromTo(int from, int to, List<Edge> edges)
     {
-        return edges.stream().filter(p -> p.getToNodeId() == from && p.getFromNodeId() == to).findFirst().get();
+        Edge result = edges.stream().filter(p -> p.getToNodeId() == from && p.getFromNodeId() == to).findFirst().orElse(null);
+        return result;
     }
 }
