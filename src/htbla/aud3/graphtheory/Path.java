@@ -17,9 +17,11 @@ public class Path {
     
     public int[] getNodeIds() {
         int[] ids = edges.stream().mapToInt(e -> e.getFromNodeId()).toArray();
-        int lastIndex = edges.size() - 1;
-        ids[lastIndex] = edges.get(lastIndex).getToNodeId();
-        return ids;
+        int[] result = new int[ids.length + 1];
+        System.arraycopy(ids, 0, result, 0, ids.length);
+        int lastIndex = edges.size();
+        result[lastIndex] = edges.get(lastIndex - 1).getToNodeId();
+        return result;
     }
     
     public double computeDistance() {

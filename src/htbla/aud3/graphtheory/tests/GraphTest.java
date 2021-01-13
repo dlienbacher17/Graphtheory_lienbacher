@@ -178,4 +178,15 @@ public class GraphTest {
 
         assertEquals(expectedDistance, returnedDistance, 0.0000000001);
     }
+
+    @Test
+    public void testGetNodeIds()
+    {
+        System.out.println("testGetNodeIds()");
+
+        int[] expectedNodeIds = new int[] { 0, 1, 2 };
+        int[] returnedNodeIds = new Path(Arrays.asList(new Edge(0, 1, 0), new Edge(1, 2, 0))).getNodeIds();
+
+        assertArrayEquals(expectedNodeIds, returnedNodeIds);
+    }
 }
