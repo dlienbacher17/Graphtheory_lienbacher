@@ -238,4 +238,30 @@ public class GraphTest {
 
         assertArrayEquals(expectedNodeIds, returnedNodeIds);
     }
+
+    @Test
+    public void testGetFirstNodeId()
+    {
+        System.out.println("testGetFirstNodeId()");
+
+        Edge edge = new Edge(2, 3, 150);
+
+        int expectedNodeId = 2;
+        int returnedNodeId = edge.getFirstNodeId();
+
+        assertEquals(expectedNodeId, returnedNodeId);
+    }
+
+    @Test
+    public void testGetSecondNodeId()
+    {
+        System.out.println("testGetSecondNodeId()");
+
+        Edge edge = new Edge(2, 3, 150);
+
+        int expectedNodeId = 3;
+        int returnedNodeId = edge.getSecondNodeId();
+
+        assertEquals(expectedNodeId, returnedNodeId);
+    }
 }
