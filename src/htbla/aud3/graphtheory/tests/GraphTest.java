@@ -53,8 +53,8 @@ public class GraphTest {
         Graph graph = new Graph();
         graph.read(new File(linz_suchproblem_path));
 
-        int fromNodeId = 26;
-        int toNodeId = 29;
+        int fromNodeId = 27;
+        int toNodeId = 30;
 
         int expectedDistance = 160;
         int returnedDistance = (int) graph.determineShortestPath(fromNodeId, toNodeId).computeDistance();

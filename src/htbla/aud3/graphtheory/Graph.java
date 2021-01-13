@@ -31,7 +31,7 @@ public class Graph {
             for(int fromId = 0; line != null; fromId++) {
                 int[] splits = Arrays.stream(line.split(";")).mapToInt(Integer::parseInt).toArray();
                 for (int toId = 0; toId < splits.length; toId++) {
-                    edges.add(new Edge(fromId, toId, splits[toId]));
+                    edges.add(new Edge(fromId + 1, toId + 1, splits[toId]));
                 }
 
                 line = br.readLine();
