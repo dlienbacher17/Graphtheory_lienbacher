@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Graphtheory_lienbacher.iml" filepath="$PROJECT_DIR$/Graphtheory_lienbacher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NewGraphtheory.iml" filepath="$PROJECT_DIR$/NewGraphtheory.iml" />
     </modules>
   </component>
 </project>
