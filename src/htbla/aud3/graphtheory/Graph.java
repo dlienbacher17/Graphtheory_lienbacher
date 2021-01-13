@@ -93,9 +93,25 @@ public class Graph {
             }
         }
     }
-    
+
     public List<Edge> determineBottlenecks(int sourceNodeId, int targetNodeId) {
-        return null;
+        List<Edge> tempEdges = new ArrayList<>(edges);
+        double result = 0.0;
+
+        while(true) {
+            Path p = determineShortestPath(sourceNodeId, targetNodeId, tempEdges);
+            if (p == null)
+                break;
+
+            double maxFlow = p.getEdges().stream().mapToDouble(x -> x.getEdgeWeight()).min().getAsDouble();
+            result += maxFlow;
+            for (Edge edge : p.getEdges()) {
+                Edge listElement = tempEdges.stream().filter(x -> x.equals(edge)).findFirst().get();
+                listElement.setEdgeWeight(listElement.getEdgeWeight() - maxFlow);
+            }
+        }
+
+        return tempEdges.stream().filter(p -> p.getEdgeWeight() < 0.00000001).collect(Collectors.toList());
     }
 
 
