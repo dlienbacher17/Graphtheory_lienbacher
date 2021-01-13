@@ -1,9 +1,12 @@
 package htbla.aud3.graphtheory.tests;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import htbla.aud3.graphtheory.*;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -125,6 +128,34 @@ public class GraphTest {
         int returnedDistance = (int) graph.determineMaximumFlow(fromNodeId, toNodeId);
 
         assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+    }
+
+    @Test
+    public void testDetermineBottleneck_int_int() {
+        System.out.println("determineBottlenecks()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_flussproblem_path));
+
+        int fromNodeId = 4;
+        int toNodeId = 1;
+
+        List<Edge> expectedBottlenecks = Arrays.asList(
+                new Edge(4, 3, 0),
+                new Edge(3, 2, 0),
+                new Edge(5, 34, 0),
+                new Edge(34, 33, 0),
+                new Edge(33, 32, 0),
+                new Edge(32, 31, 0),
+                new Edge(31, 2, 0),
+                new Edge(31, 30, 0),
+                new Edge(30, 29, 0),
+                new Edge(29, 1, 0),
+                new Edge(36, 57, 0));
+
+        List<Edge> returnedBottlenecks = graph.determineBottlenecks(fromNodeId, toNodeId);
+
+        assertTrue(expectedBottlenecks.size() == returnedBottlenecks.size() && expectedBottlenecks.containsAll(returnedBottlenecks) && returnedBottlenecks.containsAll(expectedBottlenecks));
     }
 
     /**

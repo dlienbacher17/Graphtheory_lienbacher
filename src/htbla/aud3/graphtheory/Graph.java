@@ -77,6 +77,20 @@ public class Graph {
     }
     
     public double determineMaximumFlow(int sourceNodeId, int targetNodeId) {
+        return determineMaximumFlow(sourceNodeId, targetNodeId, new ArrayList<>());
+    }
+
+    public List<Edge> determineBottlenecks(int sourceNodeId, int targetNodeId) {
+        List<Edge> bottlenecks = new ArrayList<>();
+        determineMaximumFlow(sourceNodeId, targetNodeId, bottlenecks);
+
+        return bottlenecks;
+    }
+
+
+    /* --- private recursive methods --- */
+    private double determineMaximumFlow(int sourceNodeId, int targetNodeId, List<Edge> bottlenecks)
+    {
         List<Edge> tempEdges = edges.stream().filter(p -> p.getEdgeWeight() > 0.0000000001).map(x -> {
             x.setEdgeWeight(0 - x.getEdgeWeight());
             return x;
@@ -93,34 +107,14 @@ public class Graph {
             for (Edge edge : p.getEdges()) {
                 Edge listElement = tempEdges.stream().filter(x -> x.equals(edge)).findFirst().get();
                 listElement.setEdgeWeight(listElement.getEdgeWeight() + maxFlow);
-                if (listElement.getEdgeWeight() >= 0.0)
+                if (listElement.getEdgeWeight() >= 0.0) {
+                    bottlenecks.add(listElement);
                     tempEdges.remove(listElement);
+                }
             }
         }
     }
 
-    public List<Edge> determineBottlenecks(int sourceNodeId, int targetNodeId) {
-        List<Edge> tempEdges = new ArrayList<>(edges);
-        double result = 0.0;
-
-        while(true) {
-            Path p = determineShortestPath(sourceNodeId, targetNodeId, tempEdges);
-            if (p == null)
-                break;
-
-            double maxFlow = p.getEdges().stream().mapToDouble(x -> x.getEdgeWeight()).min().getAsDouble();
-            result += maxFlow;
-            for (Edge edge : p.getEdges()) {
-                Edge listElement = tempEdges.stream().filter(x -> x.equals(edge)).findFirst().get();
-                listElement.setEdgeWeight(listElement.getEdgeWeight() - maxFlow);
-            }
-        }
-
-        return tempEdges.stream().filter(p -> Math.abs(p.getEdgeWeight()) < 0.00000001).collect(Collectors.toList());
-    }
-
-
-    /* --- private recursive methods --- */
     private boolean bfs(int source, int dest, List<Edge> edges, List<Integer> result)
     {
         List<Integer> alreadyVisited = new ArrayList();
@@ -169,8 +163,15 @@ public class Graph {
         for (Edge i : neighbors) {
             path.add(i);
 
-            if (currentBest != null && new Path(path).computeDistance() > currentBestDist)
-                return currentBest;
+            if (currentBest != null) {
+                if (shortest) {
+                    if (new Path(path).computeDistance() > currentBestDist)
+                        return currentBest;
+                } else {
+                    if (new Path(path).computeDistance() < currentBestDist)
+                        return currentBest;
+                }
+            }
 
             if(i.getToNodeId() == targetNode) {
                 for (int requiredNode : requiredNodes)
