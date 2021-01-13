@@ -62,6 +62,22 @@ public class GraphTest {
         assertEquals(expectedDistance, returnedDistance, 0.0000000001);
     }
 
+    @Test
+    public void testDetermineShortestPath2_int_int() {
+        System.out.println("determineShortestPath()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_suchproblem_path));
+
+        int fromNodeId = 56;
+        int toNodeId = 2;
+
+        int expectedDistance = 470;
+        int returnedDistance = (int) graph.determineShortestPath(fromNodeId, toNodeId).computeDistance();
+
+        assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+    }
+
     /**
      * Test of determineShortestPath method, of class Graph.
      */
