@@ -78,6 +78,22 @@ public class GraphTest {
         assertEquals(expectedDistance, returnedDistance, 0.0000000001);
     }
 
+    @Test
+    public void testDetermineMaximumFlow_int_int() {
+        System.out.println("determineMaximumFlow()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_suchproblem_path));
+
+        int fromNodeId = 1;
+        int toNodeId = 2;
+
+        int expectedDistance = 2250;
+        int returnedDistance = (int) graph.determineMaximumFlow(fromNodeId, toNodeId);
+
+        assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+    }
+
     /**
      * Test of determineShortestPath method, of class Graph.
      */

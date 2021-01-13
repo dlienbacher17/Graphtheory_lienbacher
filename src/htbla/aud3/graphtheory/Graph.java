@@ -64,8 +64,7 @@ public class Graph {
     }
     
     public double determineMaximumFlow(int sourceNodeId, int targetNodeId) {
-        List<Edge> tempEdges = new LinkedList<>();
-        Collections.copy(tempEdges, edges);
+        List<Edge> tempEdges = new ArrayList<>(edges);
 
         int u;
         double flow = 0;
