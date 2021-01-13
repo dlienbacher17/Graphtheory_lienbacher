@@ -80,11 +80,6 @@ public class GraphTest {
     }
 
     @Test
-    public void testBfs() {
-        System.out.println("determineMaximumFlow()");
-    }
-
-    @Test
     public void testDetermineMaximumFlow_int_int() {
         System.out.println("bfs()");
 

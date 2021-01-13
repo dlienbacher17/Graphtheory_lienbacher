@@ -45,51 +45,53 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId) {
-        return determineShortestPath(sourceNodeId, targetNodeId, new int[0]);
+        return determineShortestPath(sourceNodeId, targetNodeId, edges, new int[0]);
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
-        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, viaNodeIds, true);
+        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, true);
+    }
+
+    public Path determineShortestPath(int sourceNodeId, int targetNodeId, List<Edge> edges) {
+        return determineShortestPath(sourceNodeId, targetNodeId, edges, new int[0]);
+    }
+
+    public Path determineShortestPath(int sourceNodeId, int targetNodeId, List<Edge> edges, int... viaNodeIds) {
+        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, true);
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId) {
-        return determineLongestPath(sourceNodeId, targetNodeId, new int[0]);
+        return determineLongestPath(sourceNodeId, targetNodeId, edges, new int[0]);
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
-        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, viaNodeIds, false);
+        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, false);
+    }
+
+    public Path determineLongestPath(int sourceNodeId, int targetNodeId, List<Edge> edges) {
+        return determineLongestPath(sourceNodeId, targetNodeId, edges, new int[0]);
+    }
+
+    public Path determineLongestPath(int sourceNodeId, int targetNodeId, List<Edge> edges, int... viaNodeIds) {
+        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, edges, viaNodeIds, false);
     }
     
     public double determineMaximumFlow(int sourceNodeId, int targetNodeId) {
         List<Edge> tempEdges = new ArrayList<>(edges);
+        double result = 0.0;
 
-        int u;
-        double flow = 0;
-        List<Integer> parent = new LinkedList<>();
-        while(bfs(sourceNodeId, targetNodeId, tempEdges, parent))
-        {
-            double pathFlow = Double.MAX_VALUE;
-            for (int v = targetNodeId; v != sourceNodeId; v = parent.get(v-1))
-            {
-                u = parent.get(v-1);
-                pathFlow = Math.min(pathFlow, getEdgeFromTo(u, v, tempEdges).getEdgeWeight());
+        while(true) {
+            Path p = determineShortestPath(sourceNodeId, targetNodeId, tempEdges);
+            if (p == null)
+                return result;
+
+            double maxFlow = p.getEdges().stream().mapToDouble(x -> x.getEdgeWeight()).min().getAsDouble();
+            result += maxFlow;
+            for (Edge edge : p.getEdges()) {
+                Edge listElement = tempEdges.stream().filter(x -> x.equals(edge)).findFirst().get();
+                listElement.setEdgeWeight(listElement.getEdgeWeight() - maxFlow);
             }
-
-            for (int v = targetNodeId; v != sourceNodeId; v = parent.get(v))
-            {
-                u = parent.get(v-1);
-                Edge edge = getEdgeFromTo(u, v, tempEdges);
-                edge.setEdgeWeight(edge.getEdgeWeight() - pathFlow);
-                Edge reverseEdge = getEdgeFromTo(v, u, tempEdges);
-                reverseEdge.setEdgeWeight(reverseEdge.getEdgeWeight() + pathFlow);
-                tempEdges.set(tempEdges.indexOf(edge), edge);
-                tempEdges.set(tempEdges.indexOf(reverseEdge), reverseEdge);
-            }
-
-            flow += pathFlow;
         }
-
-        return flow;
     }
     
     public List<Edge> determineBottlenecks(int sourceNodeId, int targetNodeId) {
@@ -124,7 +126,7 @@ public class Graph {
         return alreadyVisited.contains(dest);
     }
 
-    private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, int[] requiredNodes, boolean shortest) {
+    private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, List<Edge> edges, int[] requiredNodes, boolean shortest) {
         List<Edge> neighbors = determinePossiblePaths(currentNodeId)
             .stream()
             .filter(p -> !(path.contains(p) || path.stream().anyMatch(x -> x.getFromNodeId() == p.getToNodeId() && x.getToNodeId() == p.getFromNodeId())))
@@ -154,7 +156,7 @@ public class Graph {
                 return new Path(path);
             }
             
-            Path result = dspRec(path.stream().collect(Collectors.toList()), i.getToNodeId(), targetNode, requiredNodes, shortest);
+            Path result = dspRec(path.stream().collect(Collectors.toList()), i.getToNodeId(), targetNode, edges, requiredNodes, shortest);
 
             if (result == null) {
                 path.remove(i);
