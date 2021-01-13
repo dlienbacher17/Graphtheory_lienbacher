@@ -18,11 +18,17 @@ public class Edge {
     public int getFromNodeId() {
         return fromNodeId;
     }
+    public int getFirstNodeId() {
+        return fromNodeId;
+    }
     
     public int getToNodeId() {
         return toNodeId;
     }
-    
+    public int getSecondNodeId() {
+        return toNodeId;
+    }
+
     public double getEdgeWeight() {
         return edgeWeight;
     }
