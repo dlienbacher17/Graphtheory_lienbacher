@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 public class GraphTest {
 
     private final String linz_suchproblem_path = ".\\src\\htbla\\aud3\\graphtheory\\infiles\\Linz_Suchproblem.csv";
+    private final String linz_flussproblem_path = ".\\src\\htbla\\aud3\\graphtheory\\infiles\\Linz_Flussproblem.csv";
 
     public GraphTest() {
     }
@@ -79,11 +80,16 @@ public class GraphTest {
     }
 
     @Test
-    public void testDetermineMaximumFlow_int_int() {
+    public void testBfs() {
         System.out.println("determineMaximumFlow()");
+    }
+
+    @Test
+    public void testDetermineMaximumFlow_int_int() {
+        System.out.println("bfs()");
 
         Graph graph = new Graph();
-        graph.read(new File(linz_suchproblem_path));
+        graph.read(new File(linz_flussproblem_path));
 
         int fromNodeId = 1;
         int toNodeId = 2;
@@ -100,15 +106,18 @@ public class GraphTest {
 
     @Test
     public void testDetermineShortestPath_3args() {
-        System.out.println("determineShortestPath");
-        int sourceNodeId = 0;
-        int targetNodeId = 0;
-        int[] viaNodeIds = null;
-        Graph instance = new Graph();
-        Path expResult = null;
-        Path result = instance.determineShortestPath(sourceNodeId, targetNodeId, viaNodeIds);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println("determineShortestPath()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_suchproblem_path));
+
+        int sourceNodeId = 27;
+        int targetNodeId = 29;
+        int[] viaNodeIds = new int[] { 30 };
+
+        int expectedDistance = 450;
+        int returnedDistance = (int) graph.determineShortestPath(sourceNodeId, targetNodeId, viaNodeIds).computeDistance();
+
+        assertEquals(expectedDistance, returnedDistance, 0.0000000001);
     }
 }

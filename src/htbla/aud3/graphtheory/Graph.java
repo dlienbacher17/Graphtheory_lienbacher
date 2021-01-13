@@ -48,9 +48,7 @@ public class Graph {
     }
     
     public Path determineShortestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
-        currentBestDist = Double.MAX_VALUE;
-        currentBest = null;
-        return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId, viaNodeIds, true);
+        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, viaNodeIds, true);
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId) {
@@ -58,9 +56,7 @@ public class Graph {
     }
 
     public Path determineLongestPath(int sourceNodeId, int targetNodeId, int... viaNodeIds) {
-        currentBestDist = Double.MAX_VALUE;
-        currentBest = null;
-        return dspRec(new ArrayList<Edge>(), sourceNodeId, targetNodeId, viaNodeIds, false);
+        return dspRec(new ArrayList(), sourceNodeId, targetNodeId, viaNodeIds, false);
     }
     
     public double determineMaximumFlow(int sourceNodeId, int targetNodeId) {
@@ -69,7 +65,7 @@ public class Graph {
         int u;
         double flow = 0;
         List<Integer> parent = new LinkedList<>();
-        while(bfs(sourceNodeId, targetNodeId, parent, tempEdges))
+        while(bfs(sourceNodeId, targetNodeId, tempEdges, parent))
         {
             double pathFlow = Double.MAX_VALUE;
             for (int v = targetNodeId; v != sourceNodeId; v = parent.get(v))
@@ -104,7 +100,7 @@ public class Graph {
 
 
     /* --- private recursive methods --- */
-    private boolean bfs(int source, int destination, List<Integer> edges, List<Edge> edges2)
+    private boolean bfs(int source, int dest, List<Edge> edges, List<Integer> result)
     {
         List<Integer> alreadyVisited = new ArrayList();
         LinkedList<Integer> queue = new LinkedList<>();
@@ -113,19 +109,21 @@ public class Graph {
 
         while (queue.size() != 0)
         {
-            int currentNode = queue.poll();
-            for (int v = 0; v < edges.size(); v++)
+            source = queue.poll();
+            result.add(source);
+            for (int v = 1; v < edges.size()+1; v++)
             {
-                if (!alreadyVisited.contains(v) && getEdgeFromTo(currentNode, v, edges2).getEdgeWeight() > 0)
+                Edge edge = getEdgeFromTo(source, v, edges);
+
+                if (!alreadyVisited.contains(v) && edge.getEdgeWeight() > 0.0)
                 {
-                    queue.add(v);
-                    edges.set(v, currentNode);
                     alreadyVisited.add(v);
+                    queue.add(v);
                 }
             }
         }
 
-        return alreadyVisited.contains(destination);
+        return alreadyVisited.contains(dest);
     }
 
     private Path dspRec(List<Edge> path, int currentNodeId, int targetNode, int[] requiredNodes, boolean shortest) {
@@ -136,12 +134,23 @@ public class Graph {
 
         if(neighbors.isEmpty())
             return null;
+
         for (Edge i : neighbors) {
             path.add(i);
 
             if(i.getToNodeId() == targetNode) {
-                for (int x : requiredNodes) {
-                    if(!Arrays.asList(requiredNodes).contains(x))
+                for (int requiredNode : requiredNodes)
+                {
+                    boolean contains = false;
+                    for (Edge edge : path) {
+                        if (edge.getToNodeId() == requiredNode)
+                        {
+                            contains = true;
+                            break;
+                        }
+                    }
+
+                    if (!contains)
                         return null;
                 }
                 return new Path(path);
@@ -149,8 +158,10 @@ public class Graph {
             
             Path result = dspRec(path.stream().collect(Collectors.toList()), i.getToNodeId(), targetNode, requiredNodes, shortest);
 
-            if (result == null)
+            if (result == null) {
+                path.remove(i);
                 continue;
+            }
 
             double currentDist = result.computeDistance();
             if (currentBest == null) {
@@ -172,6 +183,7 @@ public class Graph {
             }
             path.remove(i);
         }
+
         return currentBest;
     }
 
