@@ -143,6 +143,9 @@ public class Graph {
 
     private Path startRec(List<Edge> path, int currentNodeId, int targetNode, List<Edge> edges, int[] requiredNodes, boolean shortest)
     {
+        if (currentNodeId == targetNode)
+            return new Path(new ArrayList<>());
+
         if (!hasEntrances(targetNode))
             return null;
 
