@@ -144,6 +144,10 @@ public class GraphTest {
         int returnedDistance = (int) graph.determineMaximumFlow(fromNodeId, toNodeId);
 
         assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+
+        int returnedDistance2 = (int) graph.determineMaximumFlow(fromNodeId, toNodeId);
+
+        assertEquals(expectedDistance, returnedDistance2, 0.0000000001);
     }
 
     @Test
