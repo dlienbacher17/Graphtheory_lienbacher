@@ -99,6 +99,22 @@ public class GraphTest {
     }
 
     @Test
+    public void testDetermineShortestPath4_int_int() {
+        System.out.println("determineShortestPath()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_suchproblem_path));
+
+        int fromNodeId = 12;
+        int toNodeId = 12;
+
+        int expectedDistance = 0;
+        int returnedDistance = (int) graph.determineShortestPath(fromNodeId, toNodeId).computeDistance();
+
+        assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+    }
+
+    @Test
     public void testDetermineShortestPathInvalid_int_int() {
         System.out.println("determineShortestPath()");
 

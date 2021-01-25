@@ -143,6 +143,8 @@ public class Graph {
     {
         currentBest = null;
         currentBestDist = 0.0;
+        if (currentNodeId == targetNode)
+            return new Path(new ArrayList<>());
         if (!hasEntrances(targetNode, edges))
             return null;
 
