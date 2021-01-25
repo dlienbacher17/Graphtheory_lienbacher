@@ -131,6 +131,22 @@ public class GraphTest {
     }
 
     @Test
+    public void testDetermineShortestPathInvalid2_int_int() {
+        System.out.println("determineShortestPath()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_suchproblem_path));
+
+        int fromNodeId = 10;
+        int toNodeId = 55;
+
+        Path expectedDistance = null;
+        Path returnedDistance = graph.determineShortestPath(fromNodeId, toNodeId);
+
+        assertEquals(expectedDistance, returnedDistance);
+    }
+
+    @Test
     public void testDetermineMaximumFlow_int_int() {
         System.out.println("determineMaximumFlow()");
 
