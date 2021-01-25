@@ -327,6 +327,23 @@ public class GraphTest {
         assertTrue(expectedBottlenecks.size() == returnedBottlenecks.size() && expectedBottlenecks.containsAll(returnedBottlenecks) && returnedBottlenecks.containsAll(expectedBottlenecks));
     }
 
+    @Test
+    public void testDetermineBottleneckInvalid2_int_int() {
+        System.out.println("determineBottlenecks()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_flussproblem_path));
+
+        int fromNodeId = 10;
+        int toNodeId = 55;
+
+        List<Edge> expectedBottlenecks = new ArrayList<>();
+
+        List<Edge> returnedBottlenecks = graph.determineBottlenecks(fromNodeId, toNodeId);
+
+        assertTrue(expectedBottlenecks.size() == returnedBottlenecks.size() && expectedBottlenecks.containsAll(returnedBottlenecks) && returnedBottlenecks.containsAll(expectedBottlenecks));
+    }
+
     /**
      * Test of determineShortestPath method, of class Graph.
      */
