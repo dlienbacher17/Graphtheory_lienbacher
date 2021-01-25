@@ -218,6 +218,22 @@ public class GraphTest {
     }
 
     @Test
+    public void testDetermineMaximumFlow4_int_int() {
+        System.out.println("determineMaximumFlow()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_flussproblem_path));
+
+        int fromNodeId = 25;
+        int toNodeId = 25;
+
+        int expectedDistance = 0;
+        int returnedDistance = (int) graph.determineMaximumFlow(fromNodeId, toNodeId);
+
+        assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+    }
+
+    @Test
     public void testDetermineMaximumFlowInvalid_int_int() {
         System.out.println("determineMaximumFlow()");
 

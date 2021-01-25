@@ -92,6 +92,8 @@ public class Graph {
     /* --- private recursive methods --- */
     private double determineMaximumFlow(int sourceNodeId, int targetNodeId, List<Edge> bottlenecks)
     {
+        if (sourceNodeId == targetNodeId)
+            return 0;
         List<Edge> tempEdges = edges.stream().filter(p -> p.getEdgeWeight() > 0.0000000001).map(x -> new Edge(x.getFromNodeId(), x.getToNodeId(), 0 - x.getEdgeWeight())).collect(Collectors.toList());
         double result = 0.0;
 
