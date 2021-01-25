@@ -115,6 +115,25 @@ public class GraphTest {
     }
 
     @Test
+    public void testDetermineShortestPathVia_int_int() {
+        System.out.println("determineShortestPath()");
+
+        Graph graph = new Graph();
+        graph.read(new File(linz_suchproblem_path));
+
+        int fromNodeId = 28;
+        int toNodeId = 2;
+        int[] via = new int[] { 1 };
+
+        int expectedDistance = 1340;
+        Path returnedPath = graph.determineShortestPath(fromNodeId, toNodeId, via);
+        int returnedDistance = (int) returnedPath.computeDistance();
+
+        assertTrue(returnedPath.getEdges().stream().anyMatch(p -> p.getToNodeId() == 1));
+        assertEquals(expectedDistance, returnedDistance, 0.0000000001);
+    }
+
+    @Test
     public void testDetermineShortestPathInvalid_int_int() {
         System.out.println("determineShortestPath()");
 
