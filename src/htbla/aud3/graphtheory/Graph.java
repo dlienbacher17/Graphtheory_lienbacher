@@ -146,7 +146,7 @@ public class Graph {
         currentBest = null;
         currentBestDist = 0.0;
         if (currentNodeId == targetNode && shortest)
-            return new Path(new ArrayList<>());
+            return new Path(Arrays.asList(new Edge(currentNodeId, targetNode, 0)));
         if (!hasEntrances(targetNode, edges))
             return null;
 

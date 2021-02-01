@@ -16,6 +16,11 @@ public class Path {
     }
     
     public int[] getNodeIds() {
+        if (edges.size() == 1 && edges.get(0).getFromNodeId() == edges.get(0).getToNodeId())
+        {
+            return new int[] {edges.get(0).getFromNodeId()};
+        }
+
         int[] ids = edges.stream().mapToInt(e -> e.getFromNodeId()).toArray();
         int[] result = new int[ids.length + 1];
         System.arraycopy(ids, 0, result, 0, ids.length);
