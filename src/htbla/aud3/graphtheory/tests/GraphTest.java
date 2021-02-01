@@ -125,7 +125,7 @@ public class GraphTest {
         int toNodeId = 2;
         int[] via = new int[] { 3 };
 
-        int expectedDistance = 1290;
+        int expectedDistance = 1040;
         int returnedDistance = (int) graph.determineShortestPath(fromNodeId, toNodeId, via).computeDistance();
 
         assertEquals(expectedDistance, returnedDistance, 0.0000000001);

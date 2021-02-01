@@ -176,6 +176,7 @@ public class Graph {
             }
 
             if(i.getToNodeId() == targetNode) {
+                boolean containsAll = true;
                 for (int requiredNode : requiredNodes)
                 {
                     boolean contains = false;
@@ -187,10 +188,13 @@ public class Graph {
                         }
                     }
 
-                    if (!contains)
-                        return null;
+                    if (!contains) {
+                        containsAll = false;
+                        break;
+                    }
                 }
-                return new Path(path);
+                if(containsAll)
+                    return new Path(path);
             }
             
             Path result = dspRec(path.stream().collect(Collectors.toList()), i.getToNodeId(), targetNode, edges, requiredNodes, shortest);
